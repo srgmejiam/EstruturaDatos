@@ -1,0 +1,98 @@
+﻿using DAL;
+using EL;
+//Variables Utilizadas
+int Menu = 0;
+int ID = 0;
+int Edad = 0;
+//Objetos Utilizados
+DAL_Cliente DAL = new();
+Cliente Registro = new();
+
+do
+{
+    Console.Clear();
+    Console.WriteLine("Ingrese la operación que desee realizar");
+    Console.WriteLine("Salir: 5");
+    Console.WriteLine("Agregar: 1");
+    Console.WriteLine("Actualizar: 2");
+    Console.WriteLine("Ver: 3");
+    Console.WriteLine("Eliminar: 4");
+    _ = int.TryParse(Console.ReadLine() ?? "", out Menu);
+    switch (Menu)
+    {
+        case 0:
+            Console.WriteLine("Ingrese un valor válido");
+            Console.ReadKey();
+            break;
+        case 1://Insertar
+            Console.Clear();
+            Registro = new();
+            Registro.Id = DAL.Get().Count() + 1;
+            Console.WriteLine("Ingrese el Nombre del Cliente.");
+            Registro.Nombre = Console.ReadLine() ?? "";
+            Console.WriteLine("Ingrese la Edad del Cliente.");
+            _ = int.TryParse(Console.ReadLine() ?? "", out Edad);
+            Registro.Edad = Edad;
+            if (validar(Registro))
+            {
+                DAL.Insertar(Registro);
+            }
+            Console.ReadKey();
+            break;
+        case 2://Actualizar
+            Console.Clear();
+            Registro = new();
+            Console.WriteLine("Ingrese el ID del Cliente");
+            _ = int.TryParse(Console.ReadLine() ?? string.Empty, out ID);
+            Registro.Id = ID;
+            Console.WriteLine("Ingrese el Nombre del Cliente.");
+            Registro.Nombre = Console.ReadLine() ?? "";
+            Console.WriteLine("Ingrese la Edad del Cliente.");
+            _ = int.TryParse(Console.ReadLine() ?? "", out Edad);
+            Registro.Edad = Edad;
+            if (DAL.Update(Registro))
+            {
+                Console.WriteLine("Registro Actualizado");
+            }
+            Console.ReadKey();
+            break;
+        case 3://Ver
+            Console.Clear();
+            foreach (var item in DAL.Get())
+            {
+                Console.WriteLine($"{item.Id} {item.Nombre} {item.Edad}");
+            }
+            Console.ReadKey();
+            break;
+        case 4://Eliminar
+            Console.Clear();
+            Registro = new();
+            Console.WriteLine("Ingrese el ID del Cliente");
+            _ = int.TryParse(Console.ReadLine() ?? string.Empty, out ID);
+            Registro.Id = ID;
+
+            if (DAL.Delete(Registro))
+            {
+                Console.WriteLine("Registro eliminado");
+            }
+            Console.ReadKey();
+            break;
+    }
+}
+while (Menu != 5);
+
+
+bool validar(Cliente Entidad)
+{
+    if (string.IsNullOrEmpty(Entidad.Nombre) || string.IsNullOrWhiteSpace(Entidad.Nombre))
+    {
+        Console.WriteLine("Debe Ingresar el nombre del cliente");
+        return false;
+    }
+    if (!(Entidad.Edad > 0 && Entidad.Edad < 150))
+    {
+        Console.WriteLine("Debe Ingresar una Edad Válida");
+        return false;
+    }
+    return true;
+}
