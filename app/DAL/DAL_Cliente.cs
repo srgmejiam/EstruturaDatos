@@ -7,27 +7,28 @@ public class DAL_Cliente
     //Read
     public List<Cliente> Get()
     {
-        return Clientes;
+       using Context bd = new();
+        return bd.Cliente.ToList();
     }
     //Create
     public int Insertar(Cliente Entidad)
     {
         Clientes.Add(Entidad);
-        return Entidad.Id;
+        return Entidad.IdCliente;
     }
     //Update
     public bool Update(Cliente Entidad)
     {
-        var Registro = Clientes.Where(a => a.Id == Entidad.Id).SingleOrDefault();
+        var Registro = Clientes.Where(a => a.IdCliente == Entidad.IdCliente).SingleOrDefault();
         Registro.Nombre = Entidad.Nombre;
-        Registro.Edad = Entidad.Edad;
+        Registro.Telefono = Entidad.Telefono;
         return true;
     }
 
      public bool Delete(Cliente Entidad)
     {
 
-        var Registro = Clientes.Where(a => a.Id == Entidad.Id).SingleOrDefault();
+        var Registro = Clientes.Where(a => a.IdCliente == Entidad.IdCliente).SingleOrDefault();
         Clientes.Remove(Registro);
         return true;
     }

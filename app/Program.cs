@@ -27,12 +27,12 @@ do
         case 1://Insertar
             Console.Clear();
             Registro = new();
-            Registro.Id = DAL.Get().Count() + 1;
+            Registro.IdCliente = DAL.Get().Count() + 1;
             Console.WriteLine("Ingrese el Nombre del Cliente.");
             Registro.Nombre = Console.ReadLine() ?? "";
             Console.WriteLine("Ingrese la Edad del Cliente.");
             _ = int.TryParse(Console.ReadLine() ?? "", out Edad);
-            Registro.Edad = Edad;
+            Registro.Telefono = Edad.ToString();
             if (validar(Registro))
             {
                 DAL.Insertar(Registro);
@@ -44,12 +44,12 @@ do
             Registro = new();
             Console.WriteLine("Ingrese el ID del Cliente");
             _ = int.TryParse(Console.ReadLine() ?? string.Empty, out ID);
-            Registro.Id = ID;
+            Registro.IdCliente = ID;
             Console.WriteLine("Ingrese el Nombre del Cliente.");
             Registro.Nombre = Console.ReadLine() ?? "";
             Console.WriteLine("Ingrese la Edad del Cliente.");
             _ = int.TryParse(Console.ReadLine() ?? "", out Edad);
-            Registro.Edad = Edad;
+            Registro.Telefono = Edad.ToString();
             if (DAL.Update(Registro))
             {
                 Console.WriteLine("Registro Actualizado");
@@ -60,7 +60,7 @@ do
             Console.Clear();
             foreach (var item in DAL.Get())
             {
-                Console.WriteLine($"{item.Id} {item.Nombre} {item.Edad}");
+                Console.WriteLine($" ID: {item.IdCliente} \n Nombre: {item.Nombre} \n Telefono: {item.Telefono} \n Correo: {item.Correo} \n \n");
             }
             Console.ReadKey();
             break;
@@ -69,7 +69,7 @@ do
             Registro = new();
             Console.WriteLine("Ingrese el ID del Cliente");
             _ = int.TryParse(Console.ReadLine() ?? string.Empty, out ID);
-            Registro.Id = ID;
+            Registro.IdCliente = ID;
 
             if (DAL.Delete(Registro))
             {
@@ -89,10 +89,10 @@ bool validar(Cliente Entidad)
         Console.WriteLine("Debe Ingresar el nombre del cliente");
         return false;
     }
-    if (!(Entidad.Edad > 0 && Entidad.Edad < 150))
-    {
-        Console.WriteLine("Debe Ingresar una Edad Válida");
-        return false;
-    }
+    // if (!(Entidad.Correo > 0 && Entidad.corr < 150))
+    // {
+    //     Console.WriteLine("Debe Ingresar una Edad Válida");
+    //     return false;
+    // }
     return true;
 }
