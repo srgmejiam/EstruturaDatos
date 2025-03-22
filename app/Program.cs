@@ -27,12 +27,17 @@ do
         case 1://Insertar
             Console.Clear();
             Registro = new();
-            Registro.IdCliente = DAL.Get().Count() + 1;
+            // Registro.IdCliente = DAL.Get().Count() + 1;
+
             Console.WriteLine("Ingrese el Nombre del Cliente.");
             Registro.Nombre = Console.ReadLine() ?? "";
-            Console.WriteLine("Ingrese la Edad del Cliente.");
-            _ = int.TryParse(Console.ReadLine() ?? "", out Edad);
-            Registro.Telefono = Edad.ToString();
+            
+            Console.WriteLine("Ingrese el Correo del Cliente.");
+            Registro.Correo = Console.ReadLine() ?? "";
+
+            Console.WriteLine("Ingrese el telefono del Cliente.");
+            Registro.Telefono = Console.ReadLine() ?? "";
+            
             if (validar(Registro))
             {
                 DAL.Insertar(Registro);

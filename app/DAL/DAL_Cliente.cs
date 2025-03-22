@@ -7,13 +7,15 @@ public class DAL_Cliente
     //Read
     public List<Cliente> Get()
     {
-       using Context bd = new();
+        using Context bd = new();
         return bd.Cliente.ToList();
     }
     //Create
     public int Insertar(Cliente Entidad)
     {
-        Clientes.Add(Entidad);
+        using Context bd = new();
+        bd.Cliente.Add(Entidad);
+        bd.SaveChanges();
         return Entidad.IdCliente;
     }
     //Update
@@ -25,13 +27,13 @@ public class DAL_Cliente
         return true;
     }
 
-     public bool Delete(Cliente Entidad)
+    public bool Delete(Cliente Entidad)
     {
 
         var Registro = Clientes.Where(a => a.IdCliente == Entidad.IdCliente).SingleOrDefault();
         Clientes.Remove(Registro);
         return true;
     }
-    
+
 
 }
