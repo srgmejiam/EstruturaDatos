@@ -3,14 +3,14 @@ using EL;
 //Variables Utilizadas
 int Menu = 0;
 int ID = 0;
-int Edad = 0;
 //Objetos Utilizados
 DAL_Cliente DAL = new();
 Cliente Registro = new();
 
 do
 {
-    Console.Clear();
+
+
     Console.WriteLine("Ingrese la operación que desee realizar");
     Console.WriteLine("Salir: 5");
     Console.WriteLine("Agregar: 1");
@@ -31,13 +31,13 @@ do
 
             Console.WriteLine("Ingrese el Nombre del Cliente.");
             Registro.Nombre = Console.ReadLine() ?? "";
-            
+
             Console.WriteLine("Ingrese el Correo del Cliente.");
             Registro.Correo = Console.ReadLine() ?? "";
 
             Console.WriteLine("Ingrese el telefono del Cliente.");
             Registro.Telefono = Console.ReadLine() ?? "";
-            
+
             if (validar(Registro))
             {
                 DAL.Insertar(Registro);
@@ -49,17 +49,35 @@ do
             Registro = new();
             Console.WriteLine("Ingrese el ID del Cliente");
             _ = int.TryParse(Console.ReadLine() ?? string.Empty, out ID);
-            Registro.IdCliente = ID;
-            Console.WriteLine("Ingrese el Nombre del Cliente.");
-            Registro.Nombre = Console.ReadLine() ?? "";
-            Console.WriteLine("Ingrese la Edad del Cliente.");
-            _ = int.TryParse(Console.ReadLine() ?? "", out Edad);
-            Registro.Telefono = Edad.ToString();
-            if (DAL.Update(Registro))
+
+            Registro = DAL.GetOnlyOne(ID);
+
+            if (Registro.IdCliente > 0)
             {
-                Console.WriteLine("Registro Actualizado");
+                Console.WriteLine($"Ingrese el Nuevo Nombre del Cliente. ({Registro.Nombre})");
+                string ConsolaNombre = Console.ReadLine() ?? "";
+                Registro.Nombre = string.IsNullOrEmpty(ConsolaNombre) ? Registro.Nombre : ConsolaNombre;
+               
+
+                Console.WriteLine($"Ingrese el Nuevo Correo del Cliente. ({Registro.Correo})");
+                string ConsolaCorreo = Console.ReadLine() ?? "";
+                Registro.Correo = string.IsNullOrEmpty(ConsolaCorreo) ? Registro.Correo : ConsolaCorreo;
+
+                Console.WriteLine($"Ingrese el Nuevo Teléfono del Cliente. ({Registro.Telefono})");
+                string ConsolaTelefono = Console.ReadLine() ?? "";
+                Registro.Telefono = string.IsNullOrEmpty(ConsolaTelefono) ? Registro.Telefono : ConsolaTelefono;
+
+                if (DAL.Update(Registro))
+                {
+                    Console.WriteLine("Registro Actualizado");
+                    Console.ReadKey();
+                }
             }
-            Console.ReadKey();
+            else
+            {
+                Console.WriteLine("No existe registro con ese ID");
+                Console.ReadKey();
+            }
             break;
         case 3://Ver
             Console.Clear();

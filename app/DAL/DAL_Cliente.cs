@@ -2,13 +2,16 @@ using EL;
 namespace DAL;
 public class DAL_Cliente
 {
-    //Tabla BD
-    private List<Cliente> Clientes { get; set; } = new();
     //Read
     public List<Cliente> Get()
     {
         using Context bd = new();
         return bd.Cliente.ToList();
+    }
+    public Cliente GetOnlyOne(int ID)
+    {
+        using Context bd = new();
+        return bd.Cliente.Where(a => a.IdCliente == ID).SingleOrDefault()??new();
     }
     //Create
     public int Insertar(Cliente Entidad)
@@ -21,17 +24,19 @@ public class DAL_Cliente
     //Update
     public bool Update(Cliente Entidad)
     {
-        var Registro = Clientes.Where(a => a.IdCliente == Entidad.IdCliente).SingleOrDefault();
+        using Context bd = new();
+        var Registro = bd.Cliente.Where(a => a.IdCliente == Entidad.IdCliente).SingleOrDefault();
         Registro.Nombre = Entidad.Nombre;
         Registro.Telefono = Entidad.Telefono;
-        return true;
+        Registro.Correo = Entidad.Correo;
+        return bd.SaveChanges()>0 ;
     }
 
     public bool Delete(Cliente Entidad)
     {
-
-        var Registro = Clientes.Where(a => a.IdCliente == Entidad.IdCliente).SingleOrDefault();
-        Clientes.Remove(Registro);
+        //using Context bd = new();
+        //var Registro =bd.Cliente.Where(a => a.IdCliente == Entidad.IdCliente).SingleOrDefault();
+        //Cliente.Remove(Registro);
         return true;
     }
 
