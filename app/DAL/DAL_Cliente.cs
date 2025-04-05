@@ -6,7 +6,7 @@ public class DAL_Cliente
     public List<Cliente> Get()
     {
         using Context bd = new();
-        return bd.Cliente.ToList();
+        return bd.Cliente.Where(a=>a.Activo).ToList();
     }
     public Cliente GetOnlyOne(int ID)
     {
@@ -34,10 +34,10 @@ public class DAL_Cliente
 
     public bool Delete(Cliente Entidad)
     {
-        //using Context bd = new();
-        //var Registro =bd.Cliente.Where(a => a.IdCliente == Entidad.IdCliente).SingleOrDefault();
-        //Cliente.Remove(Registro);
-        return true;
+        using Context bd = new();
+        var Registro = bd.Cliente.Where(a => a.IdCliente == Entidad.IdCliente).SingleOrDefault();
+        Registro.Activo = false;
+        return bd.SaveChanges()>0 ;
     }
 
 

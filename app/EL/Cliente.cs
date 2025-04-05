@@ -16,6 +16,8 @@ namespace EL
          public string Correo { get; set; }
          [MaxLength(10)][Required]
          public string Telefono { get; set; }
+         [Required]
+         public bool Activo { get; set; }
 
     }
 }
